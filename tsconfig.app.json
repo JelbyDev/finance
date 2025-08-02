@@ -1,5 +1,5 @@
 {
-  // @vue/tsconfig/tsconfig.dom.json обычно заданы: target, module, strict, jsx, moduleResolution, lib
+  // @vue/tsconfig/tsconfig.dom.json обычно заданы: target, module, strict, jsx, moduleResolution, lib и др.
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": ["env.d.ts", "src/**/*.d.ts", "src/**/*.ts", "src/**/*.vue"],
   "exclude": ["node_modules"],

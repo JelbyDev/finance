@@ -1,9 +1,28 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    name: 'default',
+    component: () => import('@/layouts/DefaultLayout.vue'),
+    children: [
+      {
+        path: 'shares',
+        name: 'shares',
+        component: () => import('@/pages/SharesPage.vue'),
+      },
+      {
+        path: 'bonds',
+        name: 'bonds',
+        component: () => import('@/pages/BondsPage.vue'),
+      },
+    ],
+  },
+];
 
 const router = createRouter({
-  // import.meta.env.BASE_URL прокидывается в случаях, когда приложение может быть развернуто не от корня домена
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [],
+  routes,
 });
 
 export default router;

@@ -26,7 +26,7 @@ import stylistic from '@stylistic/eslint-plugin';
 export default defineConfigWithVueTs(
   {
     name: 'app/files-to-lint',
-    files: ['**/*.{ts,mts,tsx,vue}'],
+    files: ['**/*.{ts,vue,cjs}'],
     plugins: {
       '@stylistic': stylistic,
     },
@@ -48,7 +48,7 @@ export default defineConfigWithVueTs(
       // ------ ОТРЕЗОК ДЛЯ .VUE ФАЙЛОВ
       // Порядок секций
       'vue/block-order': ['error', { order: ['script', 'template', 'style'] }],
-      // Отступ между секциями
+      // Отступ в template секции
       'vue/html-indent': ['error', 2],
       // Запрет options в script секции
       'vue/component-api-style': ['error', ['script-setup']],

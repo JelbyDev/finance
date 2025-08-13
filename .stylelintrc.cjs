@@ -37,5 +37,9 @@ module.exports = {
     'keyframes-name-pattern': null,
     // Разрешает "понижение специфичности" селекторов (если используется БЭМ)
     'no-descending-specificity': null,
+    // Разрешает пустые строки между CSS-переменными
+    'custom-property-empty-line-before': null,
+    // Разрешает пустые строки между свойствами
+    'declaration-empty-line-before': null,
   },
 };

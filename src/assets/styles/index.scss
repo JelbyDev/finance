@@ -1,0 +1,15 @@
+@use './base/normalize';
+@use './variables/globals';
+@use './themes/light';
+@use './themes/dark';
+
+.app {
+  font-family: var(--font-family-main);
+  font-size: var(--font-size-m);
+  line-height: var(--font-line-m);
+
+  background-color: var(--bg-color);
+  color: var(--primary-color);
+
+  min-height: 100vh;
+}

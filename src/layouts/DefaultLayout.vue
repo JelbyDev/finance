@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { type ThemeContext, THEME_CONTEXT_NAME } from '@/theme/useTheme';
+import { inject } from 'vue';
+
+
+const theme = inject<ThemeContext>(THEME_CONTEXT_NAME); 
+</script>
+
 <template>
   <div>
     <div class="gg">
@@ -7,11 +15,15 @@
     <hr>
 
     <div>
-      <RouterLink to="/">
+      <button @click="theme?.toggleTheme">
+        Смена темы
+      </button>
+
+      <RouterLink :to="{name: 'shares'}">
         Акции
       </RouterLink>
 
-      <RouterLink to="/2">
+      <RouterLink :to="{name: 'bonds'}">
         Облигации
       </RouterLink>
     </div>
@@ -21,9 +33,3 @@
     <RouterView />
   </div>
 </template>
-
-<style scope>
-.gg{
-font-size: 14px;
-}
-</style>

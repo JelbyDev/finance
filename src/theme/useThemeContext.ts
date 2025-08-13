@@ -1,5 +1,5 @@
 import { inject, type Ref } from 'vue'
-import consoleLogForDevMode from '@/utils/consoleLogForDevMode';
+import consoleLogForDevMode from '@/helpers/consoleLogForDevMode';
 
 export type Theme = typeof THEME[keyof typeof THEME];
 

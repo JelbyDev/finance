@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { type ThemeContext, THEME_CONTEXT_NAME } from '@/theme/useTheme';
-import { inject } from 'vue';
+import { useThemeContext } from '@/theme/useThemeContext'
 
-
-const theme = inject<ThemeContext>(THEME_CONTEXT_NAME); 
+const themeContext = useThemeContext()
 </script>
 
 <template>
@@ -15,7 +13,13 @@ const theme = inject<ThemeContext>(THEME_CONTEXT_NAME);
     <hr>
 
     <div>
-      <button @click="theme?.toggleTheme">
+      <button
+        @click="
+          themeContext?.theme.value === 'light' 
+            ? themeContext?.setTheme('dark') 
+            : themeContext?.setTheme('light')
+        "
+      >
         Смена темы
       </button>
 

@@ -4,4 +4,5 @@ interface ImportMeta {
 
 type ImportMetaEnv = {
   readonly BASE_URL: string;
+  readonly DEV: boolean;
 };

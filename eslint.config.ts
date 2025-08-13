@@ -41,8 +41,9 @@ export default defineConfigWithVueTs(
       // Отступ от открывающей/закрывающей скобки массива/объекта
       '@stylistic/object-curly-spacing': ['error', 'always'],
       // Для переноса строк (аналог printWidth: 80)
-      // TODO - потом вернуться к вопросу о переносе строк
       '@stylistic/max-len': ['error', { code: 120, ignoreUrls: true }],
+      // Задает максимальное кол-во пустых строк подряд
+      '@stylistic/no-multiple-empty-lines': ['error', { max: 1 }],
       // ------ ОТРЕЗОК @stylistic --- OFF ---
 
       // ------ ОТРЕЗОК ДЛЯ .VUE ФАЙЛОВ

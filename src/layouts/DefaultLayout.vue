@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useThemeContext } from '@/theme/useThemeContext'
+import { useThemeContext } from '@/app/providers/ThemeProvider'
 
 const themeContext = useThemeContext()
 </script>

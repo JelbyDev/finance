@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ThemeProvider from '@/theme/ThemeProvider.vue';
+import { ThemeProvider } from '@/app/providers/ThemeProvider';
 </script>
 
 <template>

@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
-import { registerPlugins } from '@/plugins';
-import App from '@/App.vue';
-import router from '@/router';
+import { registerPlugins } from '@/app/plugins';
+import App from '@/app/App.vue';
+import router from '@/app/lib/router';
 
-import '@/assets/styles/index.scss';
+import '@/app/styles/index.scss';
 
 const app = createApp(App);
 app.use(router);

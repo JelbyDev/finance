@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
+import { ROUTE_NAMES } from '@/shared/config/routeConfig';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -8,13 +9,13 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: 'shares',
-        name: 'shares',
-        component: () => import('@/pages/SharesPage.vue'),
+        name: ROUTE_NAMES.SHARES,
+        component: () => import('@/pages/SharesPage/Index.vue'),
       },
-      {
+      { 
         path: 'bonds',
-        name: 'bonds',
-        component: () => import('@/pages/BondsPage.vue'),
+        name: ROUTE_NAMES.SHARES,
+        component: () => import('@/pages/BondsPage/Index.vue'),
       },
     ],
   },

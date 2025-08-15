@@ -57,6 +57,8 @@ export default defineConfigWithVueTs(
       'vue/padding-line-between-blocks': 'error',
       //Запрещает пустые секции
       'vue/no-empty-component-block': 'error',
+      // Добавляет отступы внутри фигурных скобок в объектах <template> секции
+      'vue/object-curly-spacing': ['error', 'always'],
       // Порядок атрибутов в компонентах
       'vue/attributes-order': [
         'error',

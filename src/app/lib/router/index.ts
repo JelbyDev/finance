@@ -8,14 +8,19 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/layouts/DefaultLayout.vue'),
     children: [
       {
-        path: 'shares',
-        name: ROUTE_NAMES.SHARES,
-        component: () => import('@/pages/SharesPage/Index.vue'),
+        path: '',
+        name: ROUTE_NAMES.HOME,
+        component: () => import('@/pages/HomePage'),
       },
       { 
         path: 'bonds',
+        name: ROUTE_NAMES.BONDS,
+        component: () => import('@/pages/BondsPage'),
+      },
+      { 
+        path: 'shares',
         name: ROUTE_NAMES.SHARES,
-        component: () => import('@/pages/BondsPage/Index.vue'),
+        component: () => import('@/pages/SharesPage'),
       },
     ],
   },

@@ -6,7 +6,7 @@ import {
   THEME, 
   LOCAL_STORAGE_THEME_KEY, 
   THEME_CONTEXT_NAME, 
-} from '../lib/useThemeContext'
+} from '@/shared/lib/composables/useThemeContext'
 
 const currentTheme = ref<Theme>((localStorage.getItem(LOCAL_STORAGE_THEME_KEY) as Theme) || THEME.LIGHT);
 

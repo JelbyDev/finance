@@ -4,28 +4,32 @@ import { useQuery, keepPreviousData } from '@tanstack/vue-query';
 import { apiClient } from '@/shared/api/apiClient';
 
 // Строгая типизация для API-ответов
-interface AnalyticsResponse {
+type AnalyticsResponse = {
   analytics: {
     data: [ticker: string, name: string, weight: number][];
   };
 }
 
-interface MarketDataResponse {
+type MarketDataResponse = {
   marketdata: {
     data: [ticker: string, price: number][];
   };
 }
 
-interface Stock {
+type Stock = {
   ticker: string;
   name: string;
-  weight: number;
-  price?: number;
+  price: number;
+  indexWeight: number;
+  portfolio: {
+    quantity: number;
+    weight: number | null;
+  }
 }
 
-function useFetchIndexComposition() {
+function useFetchIndexStocks() {
   return useQuery({
-    queryKey: ['fetch-index-composition'],
+    queryKey: ['fetch-index-stocks'],
     queryFn: async () => {
       let apiResponse;
 
@@ -43,7 +47,7 @@ function useFetchIndexComposition() {
         ticker,
         name,
         weight,
-      })) as Stock[];
+      }));
     },
     enabled: true,
     placeholderData: keepPreviousData,
@@ -78,41 +82,98 @@ function useFetchPrices() {
   });
 }
 
+function usePortfolioStocks() {
+  return useQuery({
+    queryKey: ['fetch-portfolio-stocks'],
+    queryFn: async () => {
+      return {
+        'SBERP': 260,
+        'LKOH': 26,
+      } as Record<string, number>
+    },
+    enabled: computed(() => Boolean(indexStocks.value?.length)),
+    placeholderData: keepPreviousData,
+  });
+
+}
+
 const { 
   isLoading: isLoadingIndexStocks, 
   isFetching: isFetchingIndexStocks, 
   data: indexStocks, 
-} = useFetchIndexComposition();
+} = useFetchIndexStocks();
+
 const { 
   isLoading: isLoadingPrices, 
   isFetching: isFetchingPrices, 
   data: prices, 
 } = useFetchPrices();
 
+const { 
+  isLoading: isLoadingPortfolioStocks, 
+  isFetching: isFetchingPortfolioStocks, 
+  data: portfolioStocks, 
+} = usePortfolioStocks();
+
 const isShowSkeleton = computed(() => {
   return isLoadingIndexStocks.value 
     || isFetchingIndexStocks.value 
     || isLoadingPrices.value 
-    || isFetchingPrices.value;
+    || isFetchingPrices.value
+    || isLoadingPortfolioStocks.value
+    || isFetchingPortfolioStocks.value;
 })
 
-const stocks = computed(() => {
-  if(!indexStocks.value || !prices.value) {
-    return [];
+const totalPortfolioValue = computed(() => {
+  if(!prices.value  || !portfolioStocks.value) {
+    return 0;
   }
 
-  return indexStocks.value.map((stock) => {
-    return {
-      ...stock,
-      price: prices.value[stock.ticker],
-    }
-  }).sort((a, b) => a.weight < b.weight ? 1 : -1);
+  return Object.keys(portfolioStocks.value).reduce((total, ticker) => {
+    total += prices.value[ticker] * portfolioStocks.value[ticker];
+    return total
+  }, 0);
+});
+
+const stocks = computed<Stock[]>(() => {
+  if(!indexStocks.value 
+    || !prices.value 
+    || !portfolioStocks.value 
+    || !totalPortfolioValue.value
+  ) {
+    return [];
+  }
+  
+  const formattedStocks: Stock[] = [];
+
+  for(const stock of indexStocks.value) {
+    const price = prices.value[stock.ticker];
+    const portfolioQuantity = portfolioStocks.value[stock.ticker];
+    const portfolioWeight = (portfolioQuantity * price / totalPortfolioValue.value) * 100;
+
+    formattedStocks.push({
+      ticker: stock.ticker,
+      name: stock.name,
+      price,
+      indexWeight: stock.weight,
+      portfolio: {
+        quantity: portfolioQuantity,
+        weight: isNaN(portfolioWeight) ? null : Number(portfolioWeight.toFixed(2)),
+      },
+    })
+  }
+
+  return formattedStocks.sort((a, b) => a.indexWeight < b.indexWeight ? 1 : -1);
 })
 </script>
 
 <template>
   <div class="table-container">
-    <h2>Состав индекса МосБиржи (IMOEX)</h2>
+    <h2>
+      <div>Состав индекса МосБиржи (IMOEX)</div>
+      <br>
+      <div>Итоговая стоимость портфеля: {{ totalPortfolioValue?.toLocaleString('ru-RU') }} руб.</div>
+    </h2>
 
     <div v-if="isShowSkeleton">
       Загрузка данных
@@ -133,11 +194,11 @@ const stocks = computed(() => {
           </th>
 
           <th class="header-cell">
-            Доля в индексе
+            Доля в индексе (%)
           </th>
 
           <th class="header-cell">
-            Доля в портфеле
+            Доля в портфеле (%)
           </th>
           
           <th class="header-cell">
@@ -165,13 +226,15 @@ const stocks = computed(() => {
           </td>
 
           <td class="data-cell">
-            {{ stock.weight }}%
+            {{ stock.indexWeight }}
           </td>
 
-          <td class="data-cell" />
+          <td class="data-cell">
+            {{ stock.portfolio.weight ?? 'Н/Д' }}
+          </td>
 
           <td class="data-cell">
-            <input type="text">
+            {{ stock.portfolio.quantity }}
           </td>
 
           <td class="data-cell">
